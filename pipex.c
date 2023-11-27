@@ -6,7 +6,7 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/11/27 13:40:57 by btan             ###   ########.fr       */
+/*   Updated: 2023/11/27 14:16:57 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <pipex.h>
@@ -28,7 +28,12 @@ static void	run_cmd(char *cmd)
 	free(program);
 }
 
-char	*cmd_rd(char *file, char *cmd)
+static void	free_props(t_props *props)
+{
+
+}
+
+static char	*cmd_rd(char *file, char *cmd)
 {
 	char	*program;
 	char	*temp;
