@@ -6,7 +6,7 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/11/27 11:20:19 by btan             ###   ########.fr       */
+/*   Updated: 2023/11/27 13:40:57 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <pipex.h>
@@ -28,7 +28,20 @@ static void	run_cmd(char *cmd)
 	free(program);
 }
 
+char	*cmd_rd(char *file, char *cmd)
+{
+	char	*program;
+	char	*temp;
+
+	if (!file || !cmd)
+		return (NULL);
+	program = ft_strjoin(cmd, " ");
+	temp = ft_strjoin(program, file);
+	free(program);
+	return (temp);
+}
+
 int	main(int argc, char **argv)
 {
-	run_cmd(argv[1]);
+	run_cmd(cmd_rd(argv[1], argv[2]));
 }

@@ -6,7 +6,7 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2023/11/27 11:13:58 by btan             ###   ########.fr        #
+#    Updated: 2023/11/27 13:44:34 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,17 +22,13 @@ OBJECTS = $(SRCS:.c=.o)
 
 all: $(NAME) 
 
-$(NAME):
+libft:
 	make -C Libft
 	mv ./Libft/libft.a ./
 	make fclean -C Libft
+
+$(NAME): libft
 	$(CC) $(SRC) -o pipex -I. -ILibft libft.a -g
-
-#.c.o:
-	#$(CC) $< -o $(<:.c=.o) -o pipex -I. -l$(NAME) -ILibft libft.a -g
-
-#$(NAME): $(OBJECTS)
-#	ar -rc $(NAME) $(OBJECTS)
 
 clean:
 	rm -rf $(NAME)

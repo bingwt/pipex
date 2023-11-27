@@ -6,12 +6,13 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/27 10:59:54 by btan             ###   ########.fr       */
+/*   Updated: 2023/11/27 13:40:12 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 # include <libft.h>
+# include <stdio.h>
 
 #endif
