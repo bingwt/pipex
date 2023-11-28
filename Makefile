@@ -6,7 +6,7 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2023/11/27 13:44:34 by btan             ###   ########.fr        #
+#    Updated: 2023/11/28 13:36:07 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ test-make:
 	mv ./Libft/libft.a ./
 	make fclean -C Libft
 test: test-make
-	$(CC) tests/main.c -o pipex -L -l $(NAME) -ILibft libft.a -g
+	$(CC) tests/main.c -o example -I. -ILibft libft.a -g
 run:
 	clear && ./a.out
 tester:

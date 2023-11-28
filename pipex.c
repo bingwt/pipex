@@ -6,7 +6,7 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 13:20:52 by btan             ###   ########.fr       */
+/*   Updated: 2023/11/28 14:34:42 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <pipex.h>
@@ -36,6 +36,16 @@ static char	**cmd_rd(char *file, char *cmd)
 	free(program);
 	free(temp);
 	return (args);
+}
+
+static void	out_rd()
+{
+	int	fd;
+
+	fd = open("example.txt", O_WRONLY | O_CREAT, 0644);
+	dup2(fd, 1);
+	close(fd);
+	ft_printf("This is a test");
 }
 
 static void	pipex(char	***args)
