@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 12:56:38 by btan             ###   ########.fr       */
+/*   Created: 2023/09/10 21:58:03 by btan              #+#    #+#             */
+/*   Updated: 2023/09/10 23:02:02 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <libft.h>
-# include <stdio.h>
-#include <sys/wait.h>
+#include "libft.h"
 
-typedef struct	properties
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
-	char	*cmd;
-	char	*temp;
-	char	**args;
-}	t_props;
-#endif
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (dest[j] && j < size)
+		j++;
+	while (src[i] && j + i + 1 < size)
+	{
+		dest[j + i] = src[i];
+		i++;
+	}
+	if (i + j < size)
+		dest[i + j] = '\0';
+	return (j + ft_strlen(src));
+}

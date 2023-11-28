@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 12:56:38 by btan             ###   ########.fr       */
+/*   Created: 2023/09/11 00:52:25 by btan              #+#    #+#             */
+/*   Updated: 2023/09/11 03:29:14 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <libft.h>
-# include <stdio.h>
-#include <sys/wait.h>
+#include "libft.h"
 
-typedef struct	properties
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char	*cmd;
-	char	*temp;
-	char	**args;
-}	t_props;
-#endif
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		if (*((unsigned char *) s) == (unsigned char) c)
+			return ((void *) s);
+		s++;
+		i++;
+	}
+	return (NULL);
+}
+/*{
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *) s;
+	while (*ptr != c && n--)
+		ptr++;
+	if (!*ptr && !c)
+		return (ptr);
+	if (!*ptr)
+		return (NULL);
+	return (ptr);
+}*/

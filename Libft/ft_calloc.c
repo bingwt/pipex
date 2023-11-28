@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 12:56:38 by btan             ###   ########.fr       */
+/*   Created: 2023/09/11 01:58:51 by btan              #+#    #+#             */
+/*   Updated: 2023/09/11 03:28:24 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <libft.h>
-# include <stdio.h>
-#include <sys/wait.h>
+#include "libft.h"
 
-typedef struct	properties
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*cmd;
-	char	*temp;
-	char	**args;
-}	t_props;
-#endif
+	void	*arr;
+
+	arr = malloc(nmemb * size);
+	if (arr)
+		ft_bzero(arr, nmemb * size);
+	return (arr);
+}

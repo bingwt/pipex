@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 12:56:38 by btan             ###   ########.fr       */
+/*   Created: 2023/09/11 01:32:36 by btan              #+#    #+#             */
+/*   Updated: 2023/09/11 17:45:07 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <libft.h>
-# include <stdio.h>
-#include <sys/wait.h>
+#include "libft.h"
 
-typedef struct	properties
+char	*ft_strnstr(char *big, const char *little, size_t len)
 {
-	char	*cmd;
-	char	*temp;
-	char	**args;
-}	t_props;
-#endif
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (little[j] == '\0')
+		return (big);
+	while (big[i] != '\0' && i < len)
+	{
+		while (big[i + j] == little[j] && (i + j) < len && big[i + j])
+			j++;
+		if (little[j] == '\0')
+			return (big + i);
+		i++;
+		j = 0;
+	}
+	return (0);
+}

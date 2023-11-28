@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 12:56:38 by btan             ###   ########.fr       */
+/*   Created: 2023/09/15 17:38:13 by btan              #+#    #+#             */
+/*   Updated: 2023/09/15 22:48:36 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <libft.h>
-# include <stdio.h>
-#include <sys/wait.h>
+#include "libft.h"
 
-typedef struct	properties
+int	ft_lstsize(t_list *lst)
 {
-	char	*cmd;
-	char	*temp;
-	char	**args;
-}	t_props;
-#endif
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		lst = (*lst).next;
+		count++;
+	}
+	return (count);
+}

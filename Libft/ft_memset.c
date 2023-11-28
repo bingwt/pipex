@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 12:56:38 by btan             ###   ########.fr       */
+/*   Created: 2023/09/07 11:25:18 by btan              #+#    #+#             */
+/*   Updated: 2023/09/10 17:48:48 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <libft.h>
-# include <stdio.h>
-#include <sys/wait.h>
+#include "libft.h"
 
-typedef struct	properties
+void	*ft_memset(void *s, int c, size_t n)
 {
-	char	*cmd;
-	char	*temp;
-	char	**args;
-}	t_props;
-#endif
+	while (n-- > 0)
+		((unsigned char *) s)[n] = c;
+	return (s);
+}
+/*
+#include <string.h>
+#include <stdio.h>
+int     main()
+{
+	char str[12] = "Hello World";
+	
+	printf("%s\n", (char *) memset(str, 'a', 7));
+	printf("%s\n", (char *) ft_memset(str, 'a', 7));
+}*/
