@@ -6,35 +6,47 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/11/10 12:42:33 by btan             ###   ########.fr       */
+/*   Updated: 2023/11/27 14:16:57 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <pipex.h>
 
-#include <fcntl.h>
-#include "libft.a"
-#include <unistd.h>
-
-char	*rd_left(int fd, char *content)
+static void	run_cmd(char *cmd)
 {
-	int	read_bytes;
+	char	**args;
+	char	*program; 
 
-	read_bytes = 1;
-	while (read_bytes)
-		read_bytes = read(fd, temp, 1024);
+	if (!cmd)
+		return ;
+	args = ft_split(cmd, ' ');
+	program = ft_strjoin("/bin/", args[0]);
+	if (execve(program, args, NULL) == -1)
+		ft_printf("%s: command not found\n", args[0]);
+	while (!*args)
+		free(*(args++));
+	free(args);
+	free(program);
 }
-char	*rd_right(char *file);
-void	run_cmd(char	*cmd)
+
+static void	free_props(t_props *props)
 {
-	char	*file = "/bin/bash";
-	char	*const args[] = {file, "-c", cmd, NULL};
-	char	*const env[] =  {NULL};
-	execve(file, args, env);
+
+}
+
+static char	*cmd_rd(char *file, char *cmd)
+{
+	char	*program;
+	char	*temp;
+
+	if (!file || !cmd)
+		return (NULL);
+	program = ft_strjoin(cmd, " ");
+	temp = ft_strjoin(program, file);
+	free(program);
+	return (temp);
 }
 
 int	main(int argc, char **argv)
 {
-	int	fd;
-	int	bytes_read;
-
-	if (argc == 5)
-	{
+	run_cmd(cmd_rd(argv[1], argv[2]));
+}

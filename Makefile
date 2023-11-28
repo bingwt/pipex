@@ -6,13 +6,13 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2023/11/11 15:35:10 by btan             ###   ########.fr        #
+#    Updated: 2023/11/27 13:44:34 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex.a
+NAME = pipex
 
-SRCS = 
+SRC = pipex.c
 
 CC = cc
 
@@ -22,22 +22,27 @@ OBJECTS = $(SRCS:.c=.o)
 
 all: $(NAME) 
 
-.c.o:
-	$(CC) -c $< -o $(<:.c=.o)
+libft:
+	make -C Libft
+	mv ./Libft/libft.a ./
+	make fclean -C Libft
 
-$(NAME): $(OBJECTS)
-	ar -rc $(NAME) $(OBJECTS)
+$(NAME): libft
+	$(CC) $(SRC) -o pipex -I. -ILibft libft.a -g
 
 clean:
-	rm -rf $(OBJECTS)
+	rm -rf $(NAME)
 
 fclean: clean
-	rm -rf $(NAME)
 
 re: fclean all
 
-test:
-	$(CC) tests/main.c -L -l $(NAME)
+test-make:
+	make -C Libft
+	mv ./Libft/libft.a ./
+	make fclean -C Libft
+test: test-make
+	$(CC) tests/main.c -o pipex -L -l $(NAME) -ILibft libft.a -g
 run:
 	clear && ./a.out
 tester:
