@@ -6,7 +6,7 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 14:34:42 by btan             ###   ########.fr       */
+/*   Updated: 2023/11/28 16:37:12 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <pipex.h>
@@ -19,7 +19,11 @@ static void	run_cmd(char **args)
 		return ;
 	program = ft_strjoin("/bin/", args[0]);
 	if (execve(program, args, NULL) == -1)
-		ft_printf("%s: command not found\n", args[0]);
+	{
+		perror(NULL);
+		exit(0);
+	}
+		//ft_printf("%s: command not found\n", args[0]);
 }
 
 static char	**cmd_rd(char *file, char *cmd)
@@ -38,15 +42,15 @@ static char	**cmd_rd(char *file, char *cmd)
 	return (args);
 }
 
-static void	out_rd()
-{
-	int	fd;
-
-	fd = open("example.txt", O_WRONLY | O_CREAT, 0644);
-	dup2(fd, 1);
-	close(fd);
-	ft_printf("This is a test");
-}
+//static void	out_rd()
+//{
+//	int	fd;
+//
+//	fd = open("example.txt", O_WRONLY | O_CREAT, 0644);
+//	dup2(fd, 1);
+//	close(fd);
+//	ft_printf("This is a test");
+//}
 
 static void	pipex(char	***args)
 {
