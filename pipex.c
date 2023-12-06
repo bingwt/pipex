@@ -6,7 +6,7 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/11/28 16:37:12 by btan             ###   ########.fr       */
+/*   Updated: 2023/12/07 02:01:17 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <pipex.h>
@@ -26,54 +26,36 @@ static void	run_cmd(char **args)
 		//ft_printf("%s: command not found\n", args[0]);
 }
 
-static char	**cmd_rd(char *file, char *cmd)
+static void	pipex(int fd, char ***cmd)
 {
-	char	*program;
-	char	*temp;
-	char	**args;
+	int	pid;
 
-	if (!file || !cmd)
-		return (NULL);
-	program = ft_strjoin(cmd, " ");
-	temp = ft_strjoin(program, file);
-	args = ft_split(temp, ' ');
-	free(program);
-	free(temp);
-	return (args);
+	dup2(fd, 0);
+	pid = fork();
+	if (pid == 0)
+		run_cmd(*cmd);
+	close(fd);
 }
-
-//static void	out_rd()
-//{
-//	int	fd;
-//
-//	fd = open("example.txt", O_WRONLY | O_CREAT, 0644);
-//	dup2(fd, 1);
-//	close(fd);
-//	ft_printf("This is a test");
-//}
-
-static void	pipex(char	***args)
-{
-	int	id;
-	int	i;
-	
-	id = fork();
-	if (id == 0)
-		run_cmd(*args);
-	else
-		wait(0);
-	i = 0;
-	while (args[0][i])
-		free(args[0][i++]);
-	free(args[0]);
-	ft_printf("Done!");
-}	
 
 int	main(int argc, char **argv)
 {
-	char	**args;
+	int		origin;
+	int		fd;
+	char	**cmd;
+	char	**temp;
 
-	args = cmd_rd(argv[1], argv[2]);
-	pipex(&args);
+	origin = dup(0);
+	fd = open(argv[1], O_RDONLY);
+	cmd = ft_split(argv[2], ' ');
+	pipex(fd, &cmd);
+	temp = cmd;
+	while (*temp)
+	{
+		free(*temp);
+		temp++;
+	}
+	free(cmd);
+	dup2(origin, 0);
+	close(origin);
 	return (0);
 }

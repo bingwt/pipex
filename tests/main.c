@@ -26,9 +26,14 @@
 int	main()
 {
 	int	fd;
+	int	original_stdout;
 
 	fd = open("example.txt", O_WRONLY | O_CREAT, 0644);
+	original_stdout = dup(1);
 	dup2(fd, 1);
 	close(fd);
 	ft_printf("This is a test");
+	dup2(original_stdout, 1);
+	close(original_stdout);
+	ft_putstr_fd("example.txt created\n", 1);
 }
