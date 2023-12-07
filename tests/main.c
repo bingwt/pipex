@@ -40,6 +40,28 @@
 //}
 
 //pipe()
+//#include <fcntl.h>
+//#include <libft.h>
+//#include <pipex.h>
+//
+//int	main()
+//{
+//	int	p_fd[2];
+//	char	*line;
+//
+//	pipe(p_fd);
+//	dup2(1, p_fd[WRITE_END]);
+//	ft_putstr_fd("This is a test\n", 1);
+//	ft_putstr_fd("This another is a test\n", 1);
+//	line = get_next_line(p_fd[READ_END]);
+//	while (line != NULL)
+//	{
+//		ft_printf("%s", line);
+//	}
+//	exit(1);
+//}
+
+//pipex()
 #include <fcntl.h>
 #include <libft.h>
 #include <pipex.h>
@@ -47,17 +69,28 @@
 int	main()
 {
 	int	p_fd[2];
+	int	fd;
+	int	pid;
 	char	*line;
+	char	**args;
 
+	args = ft_split(ft_strdup("cat -e"), ' ');
 	pipe(p_fd);
-	dup2(1, p_fd[WRITE_END]);
-	ft_putstr_fd("This is a test\n", 1);
-	ft_putstr_fd("This another is a test\n", 1);
-	line = get_next_line(p_fd[READ_END]);
-	while (line != NULL)
+	fd = open("Makefile", O_RDONLY);
+	dup2(fd, 0);
+	close(fd);
+  	dup2(1, p_fd[WRITE_END]);
+	pid = fork();
+	if (pid == 0)
 	{
-		ft_printf("%s", line);
+		execve("/bin/cat", args, NULL);
 	}
-	exit(1);
+	else
+	{
+		close(p_fd[READ_END]);
+		line = get_next_line(p_fd[READ_END]);
+		while (line != NULL)
+			//ft_printf("%s", line);
+		exit(1);
+	}
 }
-
