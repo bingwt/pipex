@@ -6,7 +6,7 @@
 #    By: btan <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/06 16:34:50 by btan              #+#    #+#              #
-#    Updated: 2023/11/11 15:01:43 by btan             ###   ########.fr        #
+#    Updated: 2023/12/07 12:39:21 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,9 +67,9 @@ OBJECTS = $(SRCS:.c=.o)
 BONUS_OBJECTS = $(BONUS_SRCS:.c=.o)
 
 all: $(NAME) 
-	$(CC) $(CFLAGS) -c $(SRCS)
 
 $(NAME): $(OBJECTS)
+	$(CC) $(CFLAGS) -c $(SRCS)
 	ar -rc $(NAME) $(OBJECTS)
 
 clean:
