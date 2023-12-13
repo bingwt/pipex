@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2023/12/14 01:47:08 by btan             ###   ########.fr       */
+/*   Updated: 2023/12/14 03:01:50 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	run_cmd(char *args)
 {
 	char	**cmd;
+	char	**ptr;
 	char	*program;
 	int		pid;
 
@@ -29,26 +30,17 @@ static void	run_cmd(char *args)
 			exit(0);
 		}
 	wait(NULL);
+	ptr = cmd;
 	while (*cmd)
 		free(*(cmd++));
-	free(cmd);
+	free(ptr);
 	free(program);
 	ft_printf("parent");
 }
 
 static void	pipex(char *infile, char *in_cmd, char *out_cmd, char *outfile)
 {
-	int	p_fd[2];
-	int	in_fd;
-	int	out_fd;
-
-
-	in_fd = open(infile, O_RDONLY);
-	out_fd = open(outfile, O_WRONLY | O_CREAT, 0644);
-	dup2(0, in_fd);
-	run_cmd(in_cmd);
 }
-
 int	main(int argc, char **argv)
 {
 	int	og_stdin;
