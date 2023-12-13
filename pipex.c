@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2023/12/14 03:36:31 by btan             ###   ########.fr       */
+/*   Updated: 2023/12/14 04:17:42 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,44 +36,46 @@ static void	run_cmd(char *args)
 	free(program);
 }
 
-static void	rd_cmd(int fd, char *cmd, int *p_fd, int in_out)
+static void	redirect(int in_fd, int out_fd)
 {
-	dup2(fd, !in_out); 
-	close(fd);
-	dup2(p_fd[in_out], in_out);
-	close(p_fd[in_out]);
-	run_cmd(cmd);
-}
-
-static void	pipex(char *infile, char *in_cmd, char *out_cmd, char *outfile)
-{
-	int	p_fd[2];
-	int	in_fd;
-	int	out_fd;
-	int	pid;
-	char	*line;
-	int original_stdout;
-
-	original_stdout = dup(1);
-	pipe(p_fd);
-	in_fd = open(infile, O_RDONLY);
-	out_fd = open(outfile, O_WRONLY | O_CREAT, 0644);
 	dup2(in_fd, 0);
 	close(in_fd);
-  	dup2(p_fd[WRITE_END], 1);
-	pid = fork();
-	if (pid == 0)
+	dup2(out_fd, 1);
+	close(out_fd);
+}
+
+static void	rd_cmd(char *file, char *cmd, int p_end, int dir)
+{
+	int	fd;
+
+	if (!dir)
 	{
-		run_cmd(in_cmd);
+		fd = open(file, O_RDONLY);
+		redirect(fd, p_end);
+		run_cmd(cmd);
 	}
 	else
 	{
-		dup2(p_fd[WRITE_END], 1);
-		close(p_fd[WRITE_END]);
-		run_cmd(out_cmd);
-		dup2(out_fd, 1);
-		close(out_fd);
+		fd = open(file, O_WRONLY | O_CREAT, 0644);
+		redirect(p_end, fd);
+		run_cmd(cmd);
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	int	p_fd[2];
+	int	pid;
+	char	*line;
+
+	pipe(p_fd);
+	pid = fork();
+	if (pid == 0)
+		rd_cmd(argv[1], argv[2], p_fd[WRITE_END], 0);
+	else
+	{
 		wait(NULL);
+		rd_cmd(argv[4], argv[3], p_fd[READ_END], 1);
 		line = get_next_line(p_fd[READ_END]);
 		while (line != NULL)
 		{
@@ -83,13 +85,4 @@ static void	pipex(char *infile, char *in_cmd, char *out_cmd, char *outfile)
 		}
 		exit(1);
 	}
-}
-
-int	main(int argc, char **argv)
-{
-	int	og_stdin;
-
-	og_stdin = dup(0);
-	close(0);
-	pipex(argv[1], argv[2], argv[3], argv[4]);
 }
