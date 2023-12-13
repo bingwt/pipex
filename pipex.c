@@ -3,69 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
+/*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 00:27:40 by btan              #+#    #+#             */
-/*   Updated: 2023/12/07 03:20:04 by btan             ###   ########.fr       */
+/*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
+/*   Updated: 2023/12/14 01:47:08 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <pipex.h>
 
-static void	run_cmd(char **args)
+static void	run_cmd(char *args)
 {
+	char	**cmd;
 	char	*program;
+	int		pid;
 
 	if (!args)
 		return ;
-	program = ft_strjoin("/bin/", args[0]);
-	if (execve(program, args, NULL) == -1)
-	{
-		perror(NULL);
-		exit(0);
-	}
-		//ft_printf("%s: command not found\n", args[0]);
+	cmd = ft_split(args, ' ');
+	program = ft_strjoin("/bin/", cmd[0]);
+	pid = fork();
+		if (pid == 0 && execve(program, cmd, NULL) == -1)
+		{
+			ft_printf("%s: command not found\n", cmd[0]);
+			exit(0);
+		}
+	wait(NULL);
+	while (*cmd)
+		free(*(cmd++));
+	free(cmd);
+	free(program);
+	ft_printf("parent");
 }
 
-static void	pipex(int fd, int *pipe_fds, char ***cmd, int inout)
+static void	pipex(char *infile, char *in_cmd, char *out_cmd, char *outfile)
 {
-	int	origin;
-	int	pid;
-	
-	origin = dup(inout);
-	if (inout)
-	{
-		dup2(pipe_fds[0], 0);
-		dup2(fd, 1);
-	}
-	else
-	{
-		dup2(pipe_fds[1], 1);
-		dup2(fd, 0);
-	}
-	pid = fork();
-	if (pid == 0)
-		run_cmd(*cmd);
-	close(fd);
-	dup2(origin, inout);
-	close(origin);
+	int	p_fd[2];
+	int	in_fd;
+	int	out_fd;
+
+
+	in_fd = open(infile, O_RDONLY);
+	out_fd = open(outfile, O_WRONLY | O_CREAT, 0644);
+	dup2(0, in_fd);
+	run_cmd(in_cmd);
 }
 
 int	main(int argc, char **argv)
 {
-	int		origin;
-	int		fd_in;
-	int		fd_out;
-	char	**cmd;
-	int	pipe_fds[2];
+	int	og_stdin;
 
-	pipe(pipe_fds);
-	origin = dup(0);
-	fd_in = open(argv[1], O_RDONLY);
-	fd_out = open(argv[4], O_WRONLY | O_CREAT, 0644);
-	cmd = ft_split(argv[2], ' ');
-	pipex(fd_in, pipe_fds, &cmd, 0);
-	cmd = ft_split(argv[3], ' ');
-	pipex(fd_out, pipe_fds, &cmd, 1);
-	close(origin);
-	return (0);
+	og_stdin = dup(0);
+	close(0);
+	pipex(argv[1], argv[2], argv[3], argv[4]);
 }
