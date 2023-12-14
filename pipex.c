@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2023/12/15 02:54:59 by btan             ###   ########.fr       */
+/*   Updated: 2023/12/15 03:05:03 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	rd_cmd(char *file, int *p_fd, int dir)
 	close(p_fd[1]);
 }
 
-int	main(int argc, char **argv)
+void	pipex(char *infile, char *cmd1, char *cmd2, char *outfile)
 {
 	int	p_fd[2];
 	int	pid;
@@ -60,10 +60,10 @@ int	main(int argc, char **argv)
 	pid = fork();
 	if (pid == 0)
 	{
-		rd_cmd(argv[1], p_fd, 1);
-		run_cmd(argv[2]);
+		rd_cmd(infile, p_fd, 1);
+		run_cmd(cmd1);
 	}
 	waitpid(pid, NULL, 0);
-	rd_cmd(argv[4], p_fd, 0);
-	run_cmd(argv[3]);
+	rd_cmd(outfile, p_fd, 0);
+	run_cmd(cmd2);
 }

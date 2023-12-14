@@ -6,13 +6,13 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2023/12/07 01:24:24 by btan             ###   ########.fr        #
+#    Updated: 2023/12/15 03:16:29 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
+NAME = pipex.a
 
-SRC = pipex.c
+SRCS = pipex.c
 
 CC = cc
 
@@ -26,7 +26,9 @@ $(NAME):
 	make -C Libft
 	mv ./Libft/libft.a ./
 	make fclean -C Libft
-	$(CC) $(SRC) -o pipex -I. -ILibft libft.a -g
+	$(CC) $(CFLAGS) -c $(SRCS) -I. -ILibft -g
+	ar -rc $(NAME) $(OBJECTS)
+	$(CC) $(CFLAGS) main.c -o pipex -I. -ILibft pipex.a libft.a -g
 
 clean:
 	rm -rf libft.a
