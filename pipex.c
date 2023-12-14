@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2023/12/15 02:38:46 by btan             ###   ########.fr       */
+/*   Updated: 2023/12/15 02:54:59 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,17 @@ static void	run_cmd(char *args)
 	free(program);
 }
 
-static void	redirect(int fd, int *p_fd, int dir)
+static void	rd_cmd(char *file, int *p_fd, int dir)
 {
-	if (dir == 0)
-		dup2(p_fd[1], 1);
-	else if (dir == 1)
-		dup2(p_fd[0], 0);
-	dup2(fd, dir);
+	int fd;
+
+	if (dir == 1)
+		fd = open(file, O_RDONLY);
+	else
+		fd = open(file, O_WRONLY | O_CREAT, 0644);
+	dup2(fd, !dir);
 	close(fd);
+	dup2(p_fd[dir], dir);
 	close(p_fd[0]);
 	close(p_fd[1]);
 }
@@ -51,36 +54,16 @@ static void	redirect(int fd, int *p_fd, int dir)
 int	main(int argc, char **argv)
 {
 	int	p_fd[2];
-	int	pid1;
-	int	pid2;
-	int	infile;
-	int	outfile;
+	int	pid;
 
-	infile = open(argv[1], O_RDONLY);
-	outfile = open(argv[4], O_WRONLY | O_CREAT, 0644);
 	pipe(p_fd);
-	pid1 = fork();
-	if (pid1 == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		dup2(infile, 0);
-		close(infile);
-		dup2(p_fd[1], 1);
-		close(p_fd[0]);
-		close(p_fd[1]);
+		rd_cmd(argv[1], p_fd, 1);
 		run_cmd(argv[2]);
 	}
-	pid2 = fork();
-	if (pid2 == 0)
-	{
-		dup2(p_fd[0], 0);
-		close(p_fd[0]);
-		close(p_fd[1]);
-		dup2(outfile, 1);
-		close(outfile);
-		run_cmd(argv[3]);
-	}
-	close(p_fd[0]);
-	close(p_fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	waitpid(pid, NULL, 0);
+	rd_cmd(argv[4], p_fd, 0);
+	run_cmd(argv[3]);
 }
