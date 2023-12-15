@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 23:04:57 by btan              #+#    #+#             */
-/*   Updated: 2023/11/11 15:02:19 by btan             ###   ########.fr       */
+/*   Updated: 2023/12/15 15:24:51 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ char	*ft_strchr(const char *s, int c)
 	if (!s)
 		return (NULL);
 	while (*s)
-	if (*(s++) == c)
-		return ((char *) s - 1);
+	{
+		if (*(s++) == c)
+			return ((char *) s - 1);
+	}
 	return (NULL);
 }
 /*

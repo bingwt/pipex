@@ -6,11 +6,11 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2023/12/15 03:20:41 by btan             ###   ########.fr        #
+#    Updated: 2023/12/15 15:20:44 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex.a
+NAME = pipex
 
 SRCS = pipex.c
 
@@ -27,8 +27,8 @@ $(NAME):
 	mv ./Libft/libft.a ./
 	make fclean -C Libft
 	$(CC) $(CFLAGS) -c $(SRCS) -I. -ILibft -g
-	ar -rc $(NAME) $(OBJECTS)
-	$(CC) $(CFLAGS) main.c -o pipex -I. -ILibft pipex.a libft.a -g
+	ar -rc $(NAME).a $(OBJECTS)
+	$(CC) $(CFLAGS) main.c -o $(NAME) -I. -ILibft pipex.a libft.a -g
 
 clean:
 	rm -rf $(OBJECTS) $(NAME) libft.a
