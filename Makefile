@@ -6,7 +6,7 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2023/12/15 15:20:44 by btan             ###   ########.fr        #
+#    Updated: 2023/12/15 17:26:52 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ $(NAME):
 	$(CC) $(CFLAGS) main.c -o $(NAME) -I. -ILibft pipex.a libft.a -g
 
 clean:
-	rm -rf $(OBJECTS) $(NAME) libft.a
+	rm -rf $(OBJECTS) $(NAME).a libft.a
 
 fclean: clean
 	rm -rf pipex
