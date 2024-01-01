@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 01:30:56 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 02:24:47 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static void	run_cmd(char *args, char **envp)
 	if (!args)
 		return ;
 	cmd = ft_split(args, ' ');
-	path = ft_strjoin(get_path(envp), "/");
-	program = ft_strjoin(path, cmd[0]);
+	program = ft_strjoin("/", cmd[0]);
+	path = get_path(envp, program);
 	pid = fork();
 	if (pid == -1)
 		perror(NULL);
-	if (pid == 0 && execve(program, cmd, NULL) == -1)
+	if (pid == 0 && execve(path, cmd, NULL) == -1)
 	{
 		ft_putstr_fd(cmd[0], 2);
 		ft_putstr_fd(": Command not found\n", 2);
@@ -35,8 +35,8 @@ static void	run_cmd(char *args, char **envp)
 	}
 	waitpid(pid, NULL, 0);
 	free_strs(cmd);
-	free(program);
 	free(path);
+	free(program);
 }
 
 static void	rd_cmd(int fd, int *p_fd, int dir)

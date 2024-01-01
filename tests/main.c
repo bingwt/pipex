@@ -100,7 +100,8 @@
 #include <libft.h>
 int	main()
 {
-	ft_printf("%d\n", access("/home/btan/.local/bin", X_OK));
-	ft_printf("%d\n", access("/usr/local/bin", X_OK));
-	ft_printf("%d\n", access("/usr/locasa/bin", X_OK));
+	ft_printf("%d\n", access("/home/btan/.local/bin/cat", X_OK));
+	ft_printf("%d\n", access("/usr/local/bin/cat", X_OK));
+	ft_printf("%d\n", access("/usr/bin/cat", X_OK));
+	ft_printf("%d\n", access("/usr/bin/catd", X_OK));
 }

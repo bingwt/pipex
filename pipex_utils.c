@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 01:22:16 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 01:34:54 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 02:28:16 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	free_strs(char **strs)
 	free(temp);
 }
 
-char	*get_path(char **envp)
+char	*get_path(char **envp, char *cmd)
 {
 	char	**env;
 	char	**temp;
 	int		i;
 	char	*path;
+	char	*program;
 
 	env = NULL;
 	i = 0;
@@ -44,9 +45,14 @@ char	*get_path(char **envp)
 	free_strs(env);
 	env = temp;
 	while (*temp)
-		if (!access(*(temp++), X_OK))
+	{
+		program = ft_strjoin(*(temp++), cmd);
+		if (!access(program, X_OK))
 			break ;
-	path = ft_strdup(*(--temp));
+		free(program);
+	}
+	path = ft_strdup(program);
 	free_strs(env);
+	free(program);
 	return path;
 }
