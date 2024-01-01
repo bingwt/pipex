@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 10:59:51 by btan              #+#    #+#             */
-/*   Updated: 2023/12/19 17:10:47 by btan             ###   ########.fr       */
+/*   Created: 2024/01/01 02:55:12 by btan              #+#    #+#             */
+/*   Updated: 2024/01/02 01:33:05 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 # include <errno.h>
 # include <fcntl.h>
 
-void	pipex(char *infile, char *cmd1, char *cmd2, char *outfile);
+void	free_strs(char **strs);
+char	*get_path(char **envp);
+void	pipex(char *infile, char *cmd1, char *cmd2, char *outfile, char **envp);
 #endif
