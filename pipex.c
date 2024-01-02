@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 19:42:29 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 19:49:09 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	run_cmd(char *args, char **envp)
 	if (!args)
 		return ;
 	cmd = ft_split(args, ' ');
+	if (!access(args, X_OK))
+			execve(args, cmd, envp);
 	program = ft_strjoin("/", cmd[0]);
 	path = get_path(envp, program);
 	if (!path)
