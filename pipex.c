@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 19:49:09 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 00:37:02 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	pipex(char **args, char **envp)
 	params.args = args;
 	pipe(p_fd);
 	params.pipe = p_fd;
+	open(params.args[4], O_WRONLY | O_CREAT, 0644);
 	pid = fork();
 	if (pid == -1)
 		exit(1);
