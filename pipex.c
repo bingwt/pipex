@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 17:52:26 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 19:42:29 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	handle_error(char *vars, char *error)
 	}
 	if (!ft_strncmp(error, "NO_FILE", 7))
 		ft_putstr_fd("no such file or directory: ", 2);
-	if (!ft_strncmp(error, "NO_PERMSi", 8))
+	if (!ft_strncmp(error, "NO_PERMS", 8))
 		ft_putstr_fd("permission denied: ", 2);
 	ft_putstr_fd(vars, 2);
 	ft_putchar_fd('\n', 2);
