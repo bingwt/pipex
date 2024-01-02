@@ -6,7 +6,7 @@
 #    By: btan <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/06 16:34:50 by btan              #+#    #+#              #
-#    Updated: 2023/12/07 12:39:21 by btan             ###   ########.fr        #
+#    Updated: 2024/01/02 17:53:27 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRCS =  ft_atoi.c \
 		ft_lstiter_bonus.c \
 		ft_lstmap_bonus.c \
 		ft_printf.c \
+		ft_printf_fd.c \
 		get_next_line.c \
 
 CC = cc

@@ -6,11 +6,28 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 16:11:29 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 17:52:26 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
+
+static int	handle_error(char *vars, char *error)
+{
+	ft_putstr_fd("pipex: ", 2);
+	if (!ft_strncmp(error, "CMD_NOT_FOUND", 13))
+	{
+		ft_printf_fd(2, "command not found: %s\n", vars);
+		return (127);
+	}
+	if (!ft_strncmp(error, "NO_FILE", 7))
+		ft_putstr_fd("no such file or directory: ", 2);
+	if (!ft_strncmp(error, "NO_PERMSi", 8))
+		ft_putstr_fd("permission denied: ", 2);
+	ft_putstr_fd(vars, 2);
+	ft_putchar_fd('\n', 2);
+	exit(1);
+}
 
 static void	run_cmd(char *args, char **envp)
 {
@@ -25,15 +42,14 @@ static void	run_cmd(char *args, char **envp)
 	path = get_path(envp, program);
 	if (!path)
 	{
-		ft_putstr_fd(cmd[0], 2);
-		ft_putstr_fd(": Command not found\n", 2);
+		handle_error(cmd[0], "CMD_NOT_FOUND");
 		free_strs(cmd);
 		if (path)
 			free(path);
 		free(program);
 		exit(127);
 	}
-	execve(path, cmd, NULL);
+	execve(path, cmd, envp);
 }
 
 static void	rd_cmd(int fd, int *p_fd, int dir)
@@ -50,11 +66,19 @@ static void	child(t_pipe params, char *cmd, int dir, char **envp)
 	int	fd;
 
 	if (dir == 1)
+	{
+		if (access(params.args[1], F_OK))
+			handle_error(params.args[1], "NO_FILE");
 		fd = open(params.args[1], O_RDONLY);
+		if (fd == -1)
+			handle_error(params.args[1], "NO_PERMS");
+	}
 	else
+	{
 		fd = open(params.args[4], O_WRONLY | O_CREAT, 0644);
-	if (fd == -1)
-		exit(1);
+		if (fd == -1)
+			handle_error(params.args[4], "NO_PERMS");
+	}
 	rd_cmd(fd, params.pipe, dir);
 	run_cmd(cmd, envp);
 	close(fd);
@@ -77,11 +101,5 @@ void	pipex(char **args, char **envp)
 		child(params, args[2], 1, envp);
 	waitpid(pid, NULL, 0);
 	close(p_fd[1]);
-	pid = fork();
-	if (pid == -1)
-		exit(1);
-	if (pid == 0)
-		child(params, args[3], 0, envp);
-	waitpid(pid, NULL, 0);
-	exit(0);
+	child(params, args[3], 0, envp);
 }
