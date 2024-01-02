@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 01:22:16 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 12:45:55 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 14:18:51 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ char	*get_path(char **envp, char *cmd)
 		if (!access(program_path, X_OK))
 			break ;
 		free(program_path);
+		program_path = NULL;
 	}
+	free(program);
 	free_strs(path);
 	return (program_path);
 }	

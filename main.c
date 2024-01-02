@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 03:05:11 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 12:35:39 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 14:19:08 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*path;
 
-	path = get_path(envp, "cat");
+	path = get_path(envp, "catd");
 	ft_printf("main: %s\n", path);
-	free(path);
+	if (path)
+		free(path);
 	if (argc != 5)
 	{
 		ft_printf("Please provide 4 arguments!\n");
