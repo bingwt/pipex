@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 01:22:16 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 02:28:16 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 12:45:55 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,24 @@ void	free_strs(char **strs)
 
 char	*get_path(char **envp, char *cmd)
 {
-	char	**env;
-	char	**temp;
-	int		i;
-	char	*path;
+	char	*program_path;
+	char	**path;
+	char	**ptr;
 	char	*program;
 
-	env = NULL;
-	i = 0;
-	while (!env)
-	{
-		env = ft_split(envp[i++], '=');
-		if (ft_strncmp(*env, "PATH", 4))
-		{
-			free_strs(env);
-			env = NULL;
-		}
-	}
-	temp = ft_split(env[1], ':');
-	free_strs(env);
-	env = temp;
-	while (*temp)
-	{
-		program = ft_strjoin(*(temp++), cmd);
-		if (!access(program, X_OK))
+	while (*envp)
+		if (!ft_strncmp(*(envp++), "PATH=", 5))
 			break ;
-		free(program);
+	path = ft_split(*(--envp) + 5, ':');
+	ptr = path;
+	program = ft_strjoin("/", cmd);
+	while (*ptr)
+	{
+		program_path = ft_strjoin(*(ptr++), program);
+		if (!access(program_path, X_OK))
+			break ;
+		free(program_path);
 	}
-	path = ft_strdup(program);
-	free_strs(env);
-	free(program);
-	return path;
-}
+	free_strs(path);
+	return (program_path);
+}	
