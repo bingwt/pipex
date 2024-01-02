@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 03:05:11 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 14:19:08 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 15:42:03 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ int	main(int argc, char **argv, char **envp)
 		ft_printf("Please provide 4 arguments!\n");
 		return (1);
 	}
-	pipex(argv[1], argv[2], argv[3], argv[4], envp);
+	pipex(argv, envp);
 	return (0);
 }

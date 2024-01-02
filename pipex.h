@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 02:55:12 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 02:21:15 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/02 16:11:58 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@
 # include <errno.h>
 # include <fcntl.h>
 
+typedef struct s_pipe_parameters
+{
+	char	**args;
+	int		*pipe;
+}	t_pipe;
+
 void	free_strs(char **strs);
 char	*get_path(char **envp, char *cmd);
-void	pipex(char *infile, char *cmd1, char *cmd2, char *outfile, char **envp);
+void	pipex(char **args, char **envp);
 #endif
