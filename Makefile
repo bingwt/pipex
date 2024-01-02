@@ -6,7 +6,7 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2024/01/03 01:34:36 by btan             ###   ########.fr        #
+#    Updated: 2024/01/03 01:56:03 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ bonus:
 	$(CC) $(CFLAGS) main_bonus.c -o $(NAME)_bonus -I. -ILibft pipex_bonus.a libft.a -g
 
 clean:
-	rm -rf $(OBJECTS) $(BONUS_OBJECTS) $(NAME).a libft.a
+	rm -rf $(OBJECTS) $(BONUS_OBJECTS) $(NAME).a $(NAME)_bonus.a libft.a
 
 fclean: clean
 	rm -rf pipex
