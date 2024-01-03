@@ -1,33 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 13:40:59 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 17:09:16 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
-
-static int	handle_error(char *vars, char *error)
-{
-	ft_putstr_fd("pipex: ", 2);
-	if (!ft_strncmp(error, "CMD_NOT_FOUND", 13))
-	{
-		ft_printf_fd(2, "command not found: %s\n", vars);
-		return (127);
-	}
-	if (!ft_strncmp(error, "NO_FILE", 7))
-		ft_putstr_fd("no such file or directory: ", 2);
-	if (!ft_strncmp(error, "NO_PERMS", 8))
-		ft_putstr_fd("permission denied: ", 2);
-	ft_putstr_fd(vars, 2);
-	ft_putchar_fd('\n', 2);
-	exit(1);
-}
+#include <pipex_bonus.h>
 
 static void	run_cmd(char *args, char **envp)
 {
@@ -81,13 +64,15 @@ static void	child(t_pipe params, char *cmd, int dir, char **envp)
 	exit(0);
 }
 
-void	pipex(char **args, char **envp)
+void	pipex(int argc, char **args, char **envp)
 {
 	int		p_fd[2];
 	int		pid;
 	t_pipe	params;
 	int		files[2];
 
+	if (argc > 0)
+		ft_printf("Test");
 	params.args = args;
 	pipe(p_fd);
 	params.pipe = p_fd;

@@ -6,11 +6,11 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 16:42:40 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 17:02:42 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex_bonus.h>
+#include <pipex.h>
 
 static void	run_cmd(char *args, char **envp)
 {

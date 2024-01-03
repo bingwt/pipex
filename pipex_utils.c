@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 01:22:16 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 16:12:25 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 17:04:07 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,21 @@ char	*get_path(char **envp, char *cmd)
 	free(program);
 	free_strs(path);
 	return (program_path);
+}
+
+int	handle_error(char *vars, char *error)
+{
+	ft_putstr_fd("pipex: ", 2);
+	if (!ft_strncmp(error, "CMD_NOT_FOUND", 13))
+	{
+		ft_printf_fd(2, "command not found: %s\n", vars);
+		return (127);
+	}
+	if (!ft_strncmp(error, "NO_FILE", 7))
+		ft_putstr_fd("no such file or directory: ", 2);
+	if (!ft_strncmp(error, "NO_PERMS", 8))
+		ft_putstr_fd("permission denied: ", 2);
+	ft_putstr_fd(vars, 2);
+	ft_putchar_fd('\n', 2);
+	exit(1);
 }
