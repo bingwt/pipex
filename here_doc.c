@@ -6,7 +6,7 @@
 /*   By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:19:11 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 16:55:16 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 19:28:58 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	here_doc(char *eof)
 		if (!ft_strncmp(buffer, eof, ft_strlen(eof)))
 			break ;
 		ft_printf_fd(fd, "%s", buffer);
+		free(buffer);
 	}
 	if (buffer)
 		free(buffer);
@@ -33,9 +34,14 @@ void	here_doc(char *eof)
 	buffer = get_next_line(fd);
 	while (buffer)
 	{
-		ft_printf("%s", buffer);
+		ft_printf_fd(0, "%s", buffer);
 		free(buffer);
 		buffer = get_next_line(fd);
 	}
 	unlink("here_doc.tmp");
+}
+
+int	main(int argc, char **argv)
+{
+	here_doc(argv[1]);
 }
