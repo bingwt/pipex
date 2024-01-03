@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 12:59:01 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 13:40:59 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex_bonus.h>
+#include <pipex.h>
+
+static int	handle_error(char *vars, char *error)
+{
+	ft_putstr_fd("pipex: ", 2);
+	if (!ft_strncmp(error, "CMD_NOT_FOUND", 13))
+	{
+		ft_printf_fd(2, "command not found: %s\n", vars);
+		return (127);
+	}
+	if (!ft_strncmp(error, "NO_FILE", 7))
+		ft_putstr_fd("no such file or directory: ", 2);
+	if (!ft_strncmp(error, "NO_PERMS", 8))
+		ft_putstr_fd("permission denied: ", 2);
+	ft_putstr_fd(vars, 2);
+	ft_putchar_fd('\n', 2);
+	exit(1);
+}
 
 static void	run_cmd(char *args, char **envp)
 {
@@ -48,60 +65,35 @@ static void	rd_cmd(int fd, int *p_fd, int dir)
 
 static void	child(t_pipe params, char *cmd, int dir, char **envp)
 {
-	int	fd;
-
 	if (dir == 1)
 	{
 		if (access(params.args[1], F_OK))
 			handle_error(params.args[1], "NO_FILE");
-		fd = open(params.args[1], O_RDONLY);
-		if (fd == -1)
+		if (params.files[0] == -1)
 			handle_error(params.args[1], "NO_PERMS");
 	}
 	else
-	{
-		fd = open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 644);
-		if (fd == -1)
+		if (params.files[1] == -1)
 			handle_error(params.args[4], "NO_PERMS");
-	}
-	rd_cmd(fd, params.pipe, dir);
+	rd_cmd(params.files[!dir], params.pipe, dir);
 	run_cmd(cmd, envp);
-	close(fd);
+	close(params.files[!dir]);
 	exit(0);
 }
 
-static void	multi_pipe(char *cmd, char **envp)
-{
-	int	p_fd[2];
-	int	pid;
-
-	pipe(p_fd);
-	pid = fork();
-	if (pid == -1)
-		exit(1);
-	if (pid == 0)
-	{
-		close(p_fd[0]);
-		dup2(p_fd[1], 1);
-		run_cmd(cmd, envp);
-	}
-	waitpid(pid, NULL, WNOHANG);
-	close(p_fd[1]);
-	dup2(p_fd[0], 0);
-}
-
-void	pipex(int argc, char **args, char **envp)
+void	pipex(char **args, char **envp)
 {
 	int		p_fd[2];
 	int		pid;
 	t_pipe	params;
-	int		i;
+	int		files[2];
 
 	params.args = args;
 	pipe(p_fd);
 	params.pipe = p_fd;
-	i = 2;
-	open(params.args[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 644);
+	files[0] = open(params.args[1], O_RDONLY);
+	files[1] = open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	params.files = files;
 	pid = fork();
 	if (pid == -1)
 		exit(1);
@@ -109,7 +101,5 @@ void	pipex(int argc, char **args, char **envp)
 		child(params, args[2], 1, envp);
 	waitpid(pid, NULL, WNOHANG);
 	close(p_fd[1]);
-	while (++i != (argc - 1))
-		multi_pipe(args[i], envp);
 	child(params, args[3], 0, envp);
 }

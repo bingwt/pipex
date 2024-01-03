@@ -6,7 +6,7 @@
 #    By: btan <btan@student.42singapore.sg>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/06 15:22:23 by btan              #+#    #+#              #
-#    Updated: 2024/01/03 12:48:02 by btan             ###   ########.fr        #
+#    Updated: 2024/01/03 16:46:01 by btan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 SRCS = pipex.c pipex_utils.c
 
-BONUS_SRCS = pipex_bonus.c pipex_utils_bonus.c
+BONUS_SRCS = pipex_bonus.c pipex_utils_bonus.c here_doc.c
 
 CC = cc
 
