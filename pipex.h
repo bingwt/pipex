@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 02:55:12 by btan              #+#    #+#             */
-/*   Updated: 2024/01/02 16:11:58 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 13:24:04 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_pipe_parameters
 {
 	char	**args;
 	int		*pipe;
+	int		*files;
 }	t_pipe;
 
 void	free_strs(char **strs);

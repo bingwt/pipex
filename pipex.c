@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 12:39:47 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 13:40:59 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,25 +65,19 @@ static void	rd_cmd(int fd, int *p_fd, int dir)
 
 static void	child(t_pipe params, char *cmd, int dir, char **envp)
 {
-	int	fd;
-
 	if (dir == 1)
 	{
 		if (access(params.args[1], F_OK))
 			handle_error(params.args[1], "NO_FILE");
-		fd = open(params.args[1], O_RDONLY);
-		if (fd == -1)
+		if (params.files[0] == -1)
 			handle_error(params.args[1], "NO_PERMS");
 	}
 	else
-	{
-		fd = open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 644);
-		if (fd == -1)
+		if (params.files[1] == -1)
 			handle_error(params.args[4], "NO_PERMS");
-	}
-	rd_cmd(fd, params.pipe, dir);
+	rd_cmd(params.files[!dir], params.pipe, dir);
 	run_cmd(cmd, envp);
-	close(fd);
+	close(params.files[!dir]);
 	exit(0);
 }
 
@@ -92,11 +86,14 @@ void	pipex(char **args, char **envp)
 	int		p_fd[2];
 	int		pid;
 	t_pipe	params;
+	int		files[2];
 
 	params.args = args;
 	pipe(p_fd);
 	params.pipe = p_fd;
-	open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 644);
+	files[0] = open(params.args[1], O_RDONLY);
+	files[1] = open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	params.files = files;
 	pid = fork();
 	if (pid == -1)
 		exit(1);

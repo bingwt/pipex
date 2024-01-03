@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 01:53:24 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/03 12:59:01 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	child(t_pipe params, char *cmd, int dir, char **envp)
 	}
 	else
 	{
-		fd = open(params.args[4], O_WRONLY | O_CREAT, 0644);
+		fd = open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 644);
 		if (fd == -1)
 			handle_error(params.args[4], "NO_PERMS");
 	}
@@ -81,11 +81,13 @@ static void	multi_pipe(char *cmd, char **envp)
 		exit(1);
 	if (pid == 0)
 	{
-		rd_cmd(0, p_fd, 1);
+		close(p_fd[0]);
+		dup2(p_fd[1], 1);
 		run_cmd(cmd, envp);
 	}
-	rd_cmd(1, p_fd, 0);
-	run_cmd(cmd, envp);
+	waitpid(pid, NULL, WNOHANG);
+	close(p_fd[1]);
+	dup2(p_fd[0], 0);
 }
 
 void	pipex(int argc, char **args, char **envp)
@@ -99,13 +101,13 @@ void	pipex(int argc, char **args, char **envp)
 	pipe(p_fd);
 	params.pipe = p_fd;
 	i = 2;
-	open(params.args[argc - 1], O_WRONLY | O_CREAT, 0644);
+	open(params.args[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 644);
 	pid = fork();
 	if (pid == -1)
 		exit(1);
 	if (pid == 0)
 		child(params, args[2], 1, envp);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, NULL, WNOHANG);
 	close(p_fd[1]);
 	while (++i != (argc - 1))
 		multi_pipe(args[i], envp);
