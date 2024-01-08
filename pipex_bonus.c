@@ -6,7 +6,7 @@
 /*   By: btan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 01:00:24 by btan              #+#    #+#             */
-/*   Updated: 2024/01/03 17:09:16 by btan             ###   ########.fr       */
+/*   Updated: 2024/01/06 17:01:31 by btan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,21 @@ static void	child(t_pipe params, char *cmd, int dir, char **envp)
 	exit(0);
 }
 
-void	pipex(int argc, char **args, char **envp)
+void	pipex(char **args, char **envp)
 {
 	int		p_fd[2];
 	int		pid;
 	t_pipe	params;
 	int		files[2];
 
-	if (argc > 0)
-		ft_printf("Test");
 	params.args = args;
 	pipe(p_fd);
 	params.pipe = p_fd;
-	files[0] = open(params.args[1], O_RDONLY);
-	files[1] = open(params.args[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (!ft_strncmp(args[1], "here_doc",8) && argc == 6)
+		here_doc(args[2]);
+	else
+		files[0] = open(params.args[1], O_RDONLY);
+	files[1] = open(params.args[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	params.files = files;
 	pid = fork();
 	if (pid == -1)
